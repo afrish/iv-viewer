@@ -667,6 +667,7 @@ class ImageViewer {
     imgWidth = (imageWidth > imageHeight && contHeight >= contWidth) || ratio * contHeight > contWidth
       ? contWidth
       : ratio * contHeight;
+    imgWidth = Math.min(imgWidth, imageWidth);
 
     imgHeight = imgWidth / ratio;
 
