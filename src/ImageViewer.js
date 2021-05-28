@@ -564,6 +564,7 @@ class ImageViewer {
       className: 'iv-image iv-small-image',
       src: imageSrc,
       parent: imageWrap,
+      onerror: this._options.onerror
     });
 
     this._state.loaded = false;
@@ -619,6 +620,7 @@ class ImageViewer {
       src: hiResImageSrc,
       parent: imageWrap,
       style: lowResImg.style.cssText,
+      onerror: this._options.onerror
     });
 
     // add all the style attributes from lowResImg to highResImg

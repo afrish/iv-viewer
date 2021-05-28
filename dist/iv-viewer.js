@@ -1,7 +1,7 @@
 /**
  * iv-viewer - 2.0.1
  * Author : Sudhanshu Yadav
- * Copyright (c) 2019, 2020 to Sudhanshu Yadav, released under the MIT license.
+ * Copyright (c) 2019, 2021 to Sudhanshu Yadav, released under the MIT license.
  * git+https://github.com/s-yadav/iv-viewer.git
  */
 
@@ -9,7 +9,7 @@
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
   typeof define === 'function' && define.amd ? define(factory) :
   (global = global || self, global.ImageViewer = factory());
-}(this, (function () { 'use strict';
+}(this, function () { 'use strict';
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -48,35 +48,20 @@
     return obj;
   }
 
-  function ownKeys(object, enumerableOnly) {
-    var keys = Object.keys(object);
-
-    if (Object.getOwnPropertySymbols) {
-      var symbols = Object.getOwnPropertySymbols(object);
-      if (enumerableOnly) symbols = symbols.filter(function (sym) {
-        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-      });
-      keys.push.apply(keys, symbols);
-    }
-
-    return keys;
-  }
-
-  function _objectSpread2(target) {
+  function _objectSpread(target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i] != null ? arguments[i] : {};
+      var ownKeys = Object.keys(source);
 
-      if (i % 2) {
-        ownKeys(Object(source), true).forEach(function (key) {
-          _defineProperty(target, key, source[key]);
-        });
-      } else if (Object.getOwnPropertyDescriptors) {
-        Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
-      } else {
-        ownKeys(Object(source)).forEach(function (key) {
-          Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-        });
+      if (typeof Object.getOwnPropertySymbols === 'function') {
+        ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {
+          return Object.getOwnPropertyDescriptor(source, sym).enumerable;
+        }));
       }
+
+      ownKeys.forEach(function (key) {
+        _defineProperty(target, key, source[key]);
+      });
     }
 
     return target;
@@ -168,10 +153,6 @@
   }
 
   function _iterableToArrayLimit(arr, i) {
-    if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) {
-      return;
-    }
-
     var _arr = [];
     var _n = true;
     var _d = false;
@@ -227,7 +208,8 @@
     if (options.className) elem.className = options.className;
     if (options.src) elem.src = options.src;
     if (options.style) elem.style.cssText = options.style;
-    if (options.child) elem.appendChild(options.child); // Insert before
+    if (options.child) elem.appendChild(options.child);
+    if (options.onerror) elem.onerror = options.onerror; // Insert before
 
     if (options.insertBefore) {
       options.parent.insertBefore(elem, options.insertBefore); // Standard append
@@ -619,7 +601,7 @@
         container: container,
         domElement: domElement
       };
-      this._options = _objectSpread2({}, ImageViewer.defaults, {}, options); // container for all events
+      this._options = _objectSpread({}, ImageViewer.defaults, options); // container for all events
 
       this._events = {}; // container for all timeout and frames
 
@@ -737,7 +719,7 @@
         } // save references for later use
 
 
-        this._elements = _objectSpread2({}, this._elements, {
+        this._elements = _objectSpread({}, this._elements, {
           snapView: container.querySelector('.iv-snap-view'),
           snapImageWrap: container.querySelector('.iv-snap-image-wrap'),
           imageWrap: container.querySelector('.iv-image-wrap'),
@@ -1132,7 +1114,8 @@
           tagName: 'img',
           className: 'iv-image iv-small-image',
           src: imageSrc,
-          parent: imageWrap
+          parent: imageWrap,
+          onerror: this._options.onerror
         });
         this._state.loaded = false; // store image reference in _elements
 
@@ -1191,7 +1174,8 @@
           className: 'iv-image iv-large-image',
           src: hiResImageSrc,
           parent: imageWrap,
-          style: lowResImg.style.cssText
+          style: lowResImg.style.cssText,
+          onerror: this._options.onerror
         }); // add all the style attributes from lowResImg to highResImg
 
         hiResImage.style.cssText = lowResImg.style.cssText;
@@ -1361,7 +1345,7 @@
       });
       var container = fullScreenElem.querySelector('.iv-fullscreen-container'); // call the ImageViewer constructor
 
-      _this = _possibleConstructorReturn(this, _getPrototypeOf(FullScreenViewer).call(this, container, _objectSpread2({}, options, {
+      _this = _possibleConstructorReturn(this, _getPrototypeOf(FullScreenViewer).call(this, container, _objectSpread({}, options, {
         refreshOnResize: false
       }))); // add fullScreenElem on element list
 
@@ -1429,4 +1413,4 @@
 
   return ImageViewer;
 
-})));
+}));

@@ -25,6 +25,7 @@ export function createElement (options) {
   if (options.src) elem.src = options.src;
   if (options.style) elem.style.cssText = options.style;
   if (options.child) elem.appendChild(options.child);
+  if (options.onerror) elem.onerror = options.onerror;
 
   // Insert before
   if (options.insertBefore) {
